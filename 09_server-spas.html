@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='width=device-width, initial-scale=1' name='viewport'>
+<title>Functional Reactive Web-Application Programming - ZHdK HackITZ Nov. 2016</title>
+<script script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+<link href="assets/stylesheets/app-07a25028.css" rel="stylesheet" />
+<script src="assets/javascripts/vendor-a2809d13.js"></script>
+<script src="assets/javascripts/app-7be069d1.js"></script>
+</head>
+<body>
+<div class='reveal'>
+<div class='slides container-fluid'>
+<section id='server-spas_intro'>
+<h1 id="spas-interacting-with-the-server">🕘  SPAs interacting with the Server</h1>
+
+<ul>
+  <li>
+    <p>At least a part of the routes are SPAs.</p>
+  </li>
+  <li>
+    <p>Updated state on the server needs to be reflected on the client.</p>
+  </li>
+</ul>
+
+<p>⇒ extending the re-frame concept</p>
+</section>
+<section id='server-spas_1'>
+<p><img alt="re-frame" width="80%" src="server-spas1-a6ac65fa.png" /></p>
+</section>
+<section id='server-spas_2'>
+<p><img alt="re-frame" width="80%" src="server-spas2-f163ce52.png" /></p>
+</section>
+<section id='server-spas_webscale'>
+<h1 id="but-this-is-not-webscale">But this is not "webscale"</h1>
+
+<blockquote>
+  <p>No, but on how many cores does your application run right now?</p>
+</blockquote>
+</section>
+<section id='server-spas_3'>
+<p><img alt="re-frame" width="80%" src="server-spas3-a0f4f05a.png" /></p>
+</section>
+<section id='server-spas_push'>
+<h1 id="push-for-the-channel-server--client">📌  Push for the channel Server → Client</h1>
+
+<ul>
+  <li>probably WebSockets</li>
+  <li>push diffs !</li>
+</ul>
+
+<p class="text-success">We push the state in the spirit of reactive programming.</p>
+
+<p class="text-warning">nothing else, no RPC style, nothing !</p>
+
+<p>⇒ WebSockets via <a href="https://github.com/ptaoussanis/sente">ptaoussanis/sente</a>
+seem to work rather well</p>
+</section>
+<section id='server-spas_4'>
+<p><img alt="re-frame" width="80%" src="server-spas4-68b2eb87.png" /></p>
+</section>
+<section id='server-spas_rest'>
+<h1 id="rest-for-the-channel-client--server">🌐  REST for the Channel Client → Server</h1>
+
+<p class="text-success">We can use the <strong>same routes</strong> for the <strong>API</strong> and the frontend!</p>
+
+<ul>
+  <li>
+    <p>will save you a ton of work</p>
+  </li>
+  <li>
+    <p>enables a certain kind of architecture</p>
+  </li>
+</ul>
+</section>
+<section id='server-spas_sync'>
+<h1 id="we-do-not-sync">💡  We do Not Sync</h1>
+
+<p>Two (n-) way syncing data is very hard/expensive to implement.
+So we just do not do it.</p>
+
+<p><img alt="re-frame" width="40%" src="server-spas4-68b2eb87.png" /></p>
+</section>
+
+</div>
+</div>
+</body>
+</html>

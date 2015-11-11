@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='width=device-width, initial-scale=1' name='viewport'>
+<title>Functional Reactive Web-Application Programming - ZHdK HackITZ Nov. 2016</title>
+<script script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+<link href="assets/stylesheets/app-07a25028.css" rel="stylesheet" />
+<script src="assets/javascripts/vendor-a2809d13.js"></script>
+<script src="assets/javascripts/app-7be069d1.js"></script>
+</head>
+<body>
+<div class='reveal'>
+<div class='slides container-fluid'>
+<section id='intro'>
+<section id='intro_title'>
+<h1>APPLYING FUNCTIONAL REACTIVE PROGRAMMING TO WRITE DYNAMIC SERVER BASED WEB-APPLICATIONS</h1>
+<p>-</p>
+<h4>Connecting Single Page Applications to the Backend without Mess and Mayhem</h4>
+<p>-</p>
+<h3>HackITZ, November 2016</h3>
+<div style='margin-top: 1em'></div>
+<p>
+<a href='http://github.com/drtom'>
+<i class='fa fa-github-square'></i>
+</a>
+<a href='https://twitter.com/DrTom21'>
+<i class='fa fa-twitter-square'></i>
+</a>
+&nbsp;
+Dr. Thomas Schank
+</p>
+<p style='margin-top: 1em; font-size: 50%'>Version 1.0.0</p>
+<aside class='notes'>
+<ul>
+  <li>Stuff</li>
+</ul>
+</aside>
+</section>
+</section>
+<section id='motivation1'>
+<section id='motivation_cider_ci'>
+<h1 id="motivation-1---cider-ci">🕐  Motivation 1 - Cider-CI</h1>
+
+<ul>
+  <li>periodically pull page (!) and replace</li>
+</ul>
+
+<p><img alt="Madek" width="80%" src="madek-7bb149cc.png" /></p>
+</section>
+<section id='motivation_cider-ci_pjax'>
+<h1 id="known-as-pjax">Known as pjax</h1>
+
+<ul>
+  <li>pjax = pushState + ajax</li>
+</ul>
+
+<blockquote>
+  <p>pjax works by grabbing html from your server via ajax and replacing the content of a container on your page with the ajax'd html</p>
+</blockquote>
+<p class='text-warning'>
+<i class='fa fa-bomb'></i>
+"pushState" ⇒  pulling
+</p>
+</section>
+<section id='motivation_cider-ci_pro-cons'>
+<h1>pjax pro / cons</h1>
+<div class='row'>
+<div class='col-xs-6 text-success'>
+<ul>
+  <li>
+    <p>simple, very little JavaScript</p>
+  </li>
+  <li>
+    <p>extends server side rendering</p>
+  </li>
+</ul>
+</div>
+<div class='col-xs-6 text-danger'>
+<ul>
+  <li>
+    <p>not suitable for complex frontend</p>
+  </li>
+  <li>
+    <p>frequent pulling causes load and traffic</p>
+  </li>
+  <li>
+    <p>time lags</p>
+  </li>
+</ul>
+</div>
+</div>
+</section>
+<section id='motivation_pjax_goal'>
+<h1 id="goals-1">Goals 1</h1>
+
+<h2 id="maintain-state-on-the-server">maintain state on the server,</h2>
+
+<h2 id="and-push-it-from-there-to-the-browser-on-demand">and push it from there to the browser on demand</h2>
+</section>
+
+</section>
+<section id='motivation2'>
+<section id='motivation_pivotal_intro'>
+<h1 id="motivation-2---oo--mvc--style-in-pivotal">🕑  Motivation 2 - OO / MVC  Style in Pivotal</h1>
+
+<p><img alt="Pivotal" width="80%" src="pivotal1-e224c416.png" /></p>
+
+<p class="text-warning">⇒ React wont help you if you mess up managing state</p>
+</section>
+<section id='motivation_data-binding'>
+<h3>Data Bindings and Connecting Components</h3>
+<div class='row'>
+<div class='col-xs-6 text-success'>
+<p><img alt="Angular-Data-Binding" width="80%" src="angular-data-binding-2956583c.png" /></p>
+
+<p class="fragment"><img alt="Connecting Components" width="50%" src="connecting-components-7ae9d4f7.svg" /></p>
+</div>
+<div class='col-xs-6 text-success'>
+<p class="fragment"><img alt="Connecting Components 2" width="80%" src="connecting-components-2-e9888cae.svg" /></p>
+
+<p class="fragment"><img alt="Spaghetti" width="70%" src="spaghetti-8900a251.jpg" /></p>
+</div>
+</div>
+</section>
+<section id='motivation_state'>
+<h1 id="goal-2">Goal 2</h1>
+
+<h2 id="ensure-consistency-of-state-everywhere">ensure consistency of state everywhere</h2>
+
+<p>backend, frontend, components, &#8230;</p>
+</section>
+
+</section>
+<section id='motivation3'>
+<section id='motivation_madek_intro'>
+<h1 id="motivation-3---segregation">🕒  Motivation 3 - Segregation</h1>
+</section>
+<section id='motivation_madek'>
+<p class="text-muted">There is an unnatural and unnecessary divide between back- and frontend.
+The gap in Madek v3 is now bigger as it has ever been before.</p>
+<div class='fragment'>
+<p class="text-success">Rails and other MVC Frameworks: <strong>convention over configuration</strong></p>
+
+<p class="text-danger">breaks down when things get complex</p>
+</div>
+<div class='fragment'>
+<ul>
+  <li>
+    <p>"Backend": Lots of Rails + AR hacks to write complex SQL queries.</p>
+  </li>
+  <li>
+    <p>Middle-Layer: lots of code (presenters etc.) if you want real separation (as in MVC)</p>
+  </li>
+</ul>
+</div>
+</section>
+<section id='motivation_madek_jsx'>
+<h1>Frontend: (C)JSX</h1>
+<div class='row'>
+<div class='col-xs-6'>
+<p class='text-success'>
+<i class='fa fa-check'></i>
+some React goodness
+</p>
+<p class='text-warning'>
+<i class='fa fa-minus'></i>
+XML/HTML hard to read
+</p>
+<p class='text-danger'>
+<i class='fa fa-bomb'></i>
+Templates
+</p>
+</div>
+<div class='col-xs-6'>
+<pre class='code' style='font-size: 40%'>React = require('react')
+ReactDOM = require('react-dom')
+RailsForm = require('../lib/forms/rails-form.cjsx')
+
+module.exports = React.createClass
+  displayName: 'HeaderButton'
+
+  _onClick: (event) -&gt;
+    event.preventDefault()
+    if @props.onAction
+      @props.onAction(@props.asyncAction)
+    return false
+
+  render: ({authToken, href, method, icon, title, name} = @props) -&gt;
+    method = 'post' if not method
+    icon = 'icon-' + icon
+    onClick = if @props.onAction and @props.asyncAction then @_onClick else null
+    &lt;RailsForm className='button_to' name='' method={method} action={href} authToken={authToken}&gt;
+      &lt;button className=&quot;button&quot; type=&quot;submit&quot; title={title} onClick={onClick}&gt;
+        &lt;i className={icon}&gt;&lt;/i&gt;
+      &lt;/button&gt;
+      {@props.children}
+    &lt;/RailsForm&gt;</pre>
+</div>
+</div>
+<p class='fragment'>
+<b>The DOM "is a tree"!</b>
+<span class='text-success'>
+Encode it es such and you get full code- and composability.
+</span>
+</p>
+</section>
+<section id='motivation_madek_goal'>
+<h1 id="goal-3">Goal 3</h1>
+
+<h2 id="uniformity">uniformity</h2>
+
+<p>close the gap between backend and frontend</p>
+</section>
+
+</section>
+<section id='roadmap'>
+<section id='roadmap_intro'>
+<h1 id="core-problem---remedy---roadmap">🕓  Core Problem - Remedy - Roadmap</h1>
+</section>
+<section id='roadmap_core'>
+<h1 id="the-core-problem">The Core Problem</h1>
+
+<p>managing <strong>state</strong> over <strong>time</strong> and in different <strong>places</strong></p>
+</section>
+<section id='roadmap_outlook'>
+<div class='text-success'>
+<h1 id="coming-up">Coming Up</h1>
+
+<ul>
+  <li>
+    <p>completely different approach</p>
+  </li>
+  <li>
+    <p>effective</p>
+  </li>
+  <li>
+    <p>very efficient</p>
+  </li>
+  <li>
+    <p>impossible to create bugs like seen</p>
+  </li>
+  <li>
+    <p>awesome developer experience</p>
+  </li>
+</ul>
+</div>
+</section>
+<section id='roadmap_roadmap'>
+<h1 id="roadmap">Roadmap</h1>
+
+<ol>
+  <li>
+    <p>basics</p>
+  </li>
+  <li>
+    <p>single page applications</p>
+  </li>
+  <li>
+    <p>SPA + backend</p>
+  </li>
+  <li>
+    <p>consequences to developers &amp; architecture</p>
+  </li>
+</ol>
+</section>
+<section id='roadmap_catch'>
+<h1 id="one-further-goal">One further Goal</h1>
+
+<p><strong>Interest YOU for the stuff.</strong></p>
+
+<h1 id="catch">Catch</h1>
+
+<p>attached to a particular technology:</p>
+
+<p>Clojure + ClojureScript</p>
+</section>
+
+</section>
+<section id='frp'>
+<section id='frp'>
+<h1 id="functional-reactive-programming">🕔  Functional Reactive Programming</h1>
+</section>
+<section id='frp_intro'>
+<p><em>Elliott, Conal; Hudak, Paul (1997)</em>, "Functional Reactive Animation"</p>
+
+<blockquote>
+  <p>The combination of functional programming, and reactive programming.</p>
+</blockquote>
+<div class='fragment'>
+<blockquote>
+  <p>The basic idea behind reactive programming is that there are certain
+datatypes that represent a value "over time". Computations that involve
+these changing-over-time values will themselves have values that change
+over time.</p>
+</blockquote>
+
+<h1 id="what-">What ?</h1>
+</div>
+</section>
+<section id='frp_spreadsheet_programming'>
+<h1 id="spreadsheet-programming">Spreadsheet Programming</h1>
+
+<p><img alt="Spreadsheet" width="50%" src="excel-4fc8c534.png" /></p>
+</section>
+
+</section>
+<section id='atoms'>
+<section id='atoms_intro'>
+<h1 id="storing-state-with-atoms">🕕  Storing State with Atoms</h1>
+</section>
+<section id='atoms_inc-dec'>
+<p>increase and decrease example:</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>  (<span style="color:#080;font-weight:bold">def</span> ^<span style="color:#A60">:dynamic</span> db {<span style="color:#A60">:a</span> <span style="color:#00D">0</span> <span style="color:#A60">:b</span> <span style="color:#00D">0</span>})&#x000A;<span class="line-numbers"><a href="#n2" name="n2">2</a></span>&#x000A;<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  (<span style="color:#080;font-weight:bold">doseq</span> [_ (<span style="color:#080;font-weight:bold">range</span> <span style="color:#00D">0</span> <span style="color:#00D">1000</span>)]&#x000A;<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">db</span> {<span style="color:#A60">:a</span> (<span style="color:#080;font-weight:bold">inc</span> (<span style="color:#A60">:a</span> db))&#x000A;<span class="line-numbers"><a href="#n5" name="n5">5</a></span>             <span style="color:#A60">:b</span> (<span style="color:#080;font-weight:bold">dec</span> (<span style="color:#A60">:b</span> db))}))&#x000A;<span class="line-numbers"><a href="#n6" name="n6">6</a></span>&#x000A;<span class="line-numbers"><a href="#n7" name="n7">7</a></span>  <span style="color:#777">; (= db {:a 1000 :b -1000})</span></pre></div>
+</div>
+</div>
+<div class='fragment'>
+<p>with threads</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>  (<span style="color:#080;font-weight:bold">def</span> ^<span style="color:#A60">:dynamic</span> db {<span style="color:#A60">:a</span> <span style="color:#00D">0</span> <span style="color:#A60">:b</span> <span style="color:#00D">0</span>})&#x000A;<span class="line-numbers"><a href="#n2" name="n2">2</a></span>&#x000A;<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  (<span style="color:#080;font-weight:bold">doseq</span> [_ (<span style="color:#080;font-weight:bold">range</span> <span style="color:#00D">0</span> <span style="color:#00D">1000</span>)]&#x000A;<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    (<span style="color:#080;font-weight:bold">future</span>&#x000A;<span class="line-numbers"><a href="#n5" name="n5">5</a></span>      (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">db</span> {<span style="color:#A60">:a</span> (<span style="color:#080;font-weight:bold">inc</span> (<span style="color:#A60">:a</span> db))&#x000A;<span class="line-numbers"><a href="#n6" name="n6">6</a></span>               <span style="color:#A60">:b</span> (<span style="color:#080;font-weight:bold">dec</span> (<span style="color:#A60">:b</span> db))})))&#x000A;<span class="line-numbers"><a href="#n7" name="n7">7</a></span>&#x000A;<span class="line-numbers"><a href="#n8" name="n8">8</a></span>  <span style="color:#777">; .e.g. (= db {:a 598, :b -666})</span></pre></div>
+</div>
+</div>
+
+<p>ooooops</p>
+</div>
+<small class='fragment text-warning'>
+The absence of threads does not solve the state problem, it makes it even harder.
+</small>
+</section>
+<section id='atoms_mvvc'>
+<h1 id="the-atom">The Atom</h1>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>  (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">db</span> (<span style="color:#080;font-weight:bold">atom</span> {<span style="color:#A60">:a</span> <span style="color:#00D">0</span> <span style="color:#A60">:b</span> <span style="color:#00D">0</span>}))&#x000A;<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>&#x000A;<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  (<span style="color:#080;font-weight:bold">doseq</span> [_ (<span style="color:#080;font-weight:bold">range</span> <span style="color:#00D">0</span> <span style="color:#00D">1000</span>)]&#x000A;<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    (<span style="color:#080;font-weight:bold">future</span>&#x000A;<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>      (<span style="color:#080;font-weight:bold">swap!</span> db&#x000A;<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>             (<span style="color:#080;font-weight:bold">fn</span> [current]&#x000A;<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>               {<span style="color:#A60">:a</span> (<span style="color:#080;font-weight:bold">inc</span> (<span style="color:#A60">:a</span> current))&#x000A;<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>                <span style="color:#A60">:b</span> (<span style="color:#080;font-weight:bold">dec</span> (<span style="color:#A60">:b</span> current))}))))&#x000A;<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>&#x000A;<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  <span style="color:#777">; (= @db {:a 1000, :b -1000})</span></pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Atoms provide a way to manage shared, synchronous, independent state.
+The intended use of <code>atom</code> is to hold one of Clojure’s immutable data structures.</p>
+</blockquote>
+</section>
+<section id='atoms_cont'>
+<h1 id="the-atom-cont">The Atom cont.</h1>
+
+<h2 id="interesting">Interesting</h2>
+
+<ul>
+  <li>no <code>locking</code></li>
+  <li>transactions, MVCC</li>
+</ul>
+
+<hr />
+
+<h2 id="extremely-useful">Extremely useful</h2>
+
+<ul>
+  <li>
+    <p>support validators ⇒ schema</p>
+  </li>
+  <li>
+    <p>watchable</p>
+  </li>
+</ul>
+</section>
+
+</section>
+<section id='reagent'>
+<section id='reagent_intro'>
+<h1 id="reactive-programming---atoms---reagent">🕕  Reactive Programming - Atoms - Reagent</h1>
+</section>
+<section id='reagent_reactive'>
+<h1 id="atoms-and-reactive-programming">Atoms and Reactive Programming</h1>
+
+<p>imagine: <code>atom</code> ≅ cell of a spreadsheet</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>  (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">a1</span> (<span style="color:#080;font-weight:bold">atom</span> <span style="color:#00D">5</span>))&#x000A;<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">a2</span> (<span style="color:#080;font-weight:bold">atom</span> <span style="color:#00D">7</span>))&#x000A;<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">a3</span> (reaction (<span style="color:#080;font-weight:bold">+</span> @a1 @a2)))</pre></div>
+</div>
+</div>
+<div class='fragment'>
+<ul>
+  <li><code>a3</code> is an atom</li>
+  <li>value of <code>a1</code> or <code>a2</code> change ⇒  <code>a3</code> will get updated[^lazy][^reaction]</li>
+  <li>evaluation can be <em>eager</em> or <em>lazy</em>, depending on the environment and library</li>
+</ul>
+</div>
+</section>
+<section id='reagent_core'>
+<h1 id="i-classfa-fa-flaski-reagenthttpsreagent-projectgithubio"><a href="https://reagent-project.github.io/"><i class="fa fa-flask"></i> Reagent</a></h1>
+
+<p>-</p>
+
+<h2 id="minimalistic-react-for-clojurescript">"Minimalistic React for ClojureScript"</h2>
+
+<p>see</p>
+
+<h2 id="managing-state-in-reagent">"Managing state in Reagent"</h2>
+</section>
+
+</section>
+<section id='spa'>
+<section id='spa_into'>
+<h1>🕖  Single Page Applications</h1>
+<blockquote>
+Single-Page Applications (SPAs) are Web apps that load a single HTML page
+and dynamically update that page as the user interacts with the app ...
+without constant page reloads. (ASP.NET)
+</blockquote>
+<small class='text-muted'>
+We consider a webapp without data exchange to or from the server for now.
+</small>
+</section>
+<section id='spa_reframe'>
+<h1 id="re-framehttpsgithubcomday8re-frame"><a href="https://github.com/Day8/re-frame">re-frame</a></h1>
+
+<p><em>re-frame</em> is a <strong>pattern</strong> for writing SPAs in <strong>ClojureScript</strong>, using <strong>Reagent</strong>.</p>
+
+<blockquote>
+  <p>"It's MVC, Jim, but not as we know it". (re-frame)</p>
+</blockquote>
+<div class='fragment'>
+<p>
+<b class='text-warning'>Honestly, it is not MVC!</b>
+</p>
+<small>
+<p>You will find the patterns used in <em>re-frame</em> in other talks, libraries, frameworks.
+It is all over the place.</p>
+
+<p>You should read the re-frame documentation. It is witty in all of its meanings.</p>
+</small>
+</div>
+</section>
+<section id='spa_reframe_key'>
+<h1>re-frame key features</h1>
+<div class='row'>
+<div class='col-xs-6'>
+<p><img alt="re-frame" width="80%" src="re-frame-2381b27d.png" /></p>
+</div>
+<div class='col-xs-6'>
+<ul>
+  <li>
+    <p>One and only one database!</p>
+  </li>
+  <li>
+    <p>Data flows from the database to the DOM.</p>
+  </li>
+  <li>
+    <p>Events cause the database to change.</p>
+  </li>
+  <li>
+    <p>Events never manipulate the DOM directly.</p>
+  </li>
+</ul>
+
+<p class="text-warning"><strong>no shortcuts!</strong></p>
+</div>
+</div>
+</section>
+<section id='spa_databases'>
+<h1 id="one-database-">One Database ?</h1>
+
+<p>Technically, you can have multiple databases.</p>
+
+<p>Their signal graph must form an <strong>acyclic directed graph</strong>.</p>
+
+<p>Make sure you don't shortcut. The Dom is always "the sink".</p>
+
+<p class="text-info">Do not complicate things unnecessarily
+⇒ <strong>just use one database</strong>!</p>
+<small class='fragment text-muted'>
+These rules are less out of a technical necessity.  They help us to avoid
+unnecessary complexity and focus on the features.
+</small>
+</section>
+<section id='spa_validation'>
+<h1 id="define-a-schema-and-validate">Define a Schema and Validate!</h1>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>(<span style="color:#080;font-weight:bold">ns</span> <span style="color:#707;font-weight:bold">cider-ci.repository.fetch-and-update.db-schema</span>&#x000A;<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  (<span style="color:#A60">:require</span> [schema.core <span style="color:#A60">:as</span> schema]))&#x000A;<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>&#x000A;<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>(<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">schema</span>&#x000A;<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  {<span style="color:#A60">:last_fetched_at</span> (schema/maybe org.joda.time.DateTime)&#x000A;<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>   <span style="color:#A60">:last_error</span> (schema/maybe String)&#x000A;<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>   <span style="color:#A60">:last_error_at</span> (schema/maybe org.joda.time.DateTime)&#x000A;<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>   <span style="color:#A60">:updated_at</span> org.joda.time.DateTime&#x000A;<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>   <span style="color:#A60">:state</span> (schema/enum <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">error</span><span style="color:#710">&quot;</span></span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">fetching</span><span style="color:#710">&quot;</span></span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">initializing</span><span style="color:#710">&quot;</span></span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">ok</span><span style="color:#710">&quot;</span></span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">waiting</span><span style="color:#710">&quot;</span></span>)&#x000A;<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>   <span style="color:#A60">:pending?</span> Boolean })</pre></div>
+</div>
+</div>
+<div class='fragment'>
+<p>e.g. use it like this</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>(<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">fetch-and-update-db</span>&#x000A;<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  (<span style="color:#080;font-weight:bold">atom</span> {<span style="color:#A60">:last_fetched_at</span> <span style="color:#069">nil</span>&#x000A;<span class="line-numbers"><a href="#n3" name="n3">3</a></span>         <span style="color:#A60">:last_error</span> <span style="color:#069">nil</span>&#x000A;<span class="line-numbers"><a href="#n4" name="n4">4</a></span>         <span style="color:#A60">:last_error_at</span> <span style="color:#069">nil</span>&#x000A;<span class="line-numbers"><a href="#n5" name="n5">5</a></span>         <span style="color:#A60">:updated_at</span> (time/now)&#x000A;<span class="line-numbers"><a href="#n6" name="n6">6</a></span>         <span style="color:#A60">:pending?</span> <span style="color:#069">true</span>&#x000A;<span class="line-numbers"><a href="#n7" name="n7">7</a></span>         <span style="color:#A60">:state</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">initializing</span><span style="color:#710">&quot;</span></span> }&#x000A;<span class="line-numbers"><a href="#n8" name="n8">8</a></span>        <span style="color:#A60">:validator</span> #(schema/validate schema %)))</pre></div>
+</div>
+</div>
+<small>
+<p><a href="https://github.com/plumatic/schema">plumatic/schema</a> works uniformly in Clojure and ClojureScript.</p>
+</small>
+</div>
+</section>
+
+</section>
+<section id='server_spas'>
+<section id='server-spas_intro'>
+<h1 id="spas-interacting-with-the-server">🕘  SPAs interacting with the Server</h1>
+
+<ul>
+  <li>
+    <p>At least a part of the routes are SPAs.</p>
+  </li>
+  <li>
+    <p>Updated state on the server needs to be reflected on the client.</p>
+  </li>
+</ul>
+
+<p>⇒ extending the re-frame concept</p>
+</section>
+<section id='server-spas_1'>
+<p><img alt="re-frame" width="80%" src="server-spas1-a6ac65fa.png" /></p>
+</section>
+<section id='server-spas_2'>
+<p><img alt="re-frame" width="80%" src="server-spas2-f163ce52.png" /></p>
+</section>
+<section id='server-spas_webscale'>
+<h1 id="but-this-is-not-webscale">But this is not "webscale"</h1>
+
+<blockquote>
+  <p>No, but on how many cores does your application run right now?</p>
+</blockquote>
+</section>
+<section id='server-spas_3'>
+<p><img alt="re-frame" width="80%" src="server-spas3-a0f4f05a.png" /></p>
+</section>
+<section id='server-spas_push'>
+<h1 id="push-for-the-channel-server--client">📌  Push for the channel Server → Client</h1>
+
+<ul>
+  <li>probably WebSockets</li>
+  <li>push diffs !</li>
+</ul>
+
+<p class="text-success">We push the state in the spirit of reactive programming.</p>
+
+<p class="text-warning">nothing else, no RPC style, nothing !</p>
+
+<p>⇒ WebSockets via <a href="https://github.com/ptaoussanis/sente">ptaoussanis/sente</a>
+seem to work rather well</p>
+</section>
+<section id='server-spas_4'>
+<p><img alt="re-frame" width="80%" src="server-spas4-68b2eb87.png" /></p>
+</section>
+<section id='server-spas_rest'>
+<h1 id="rest-for-the-channel-client--server">🌐  REST for the Channel Client → Server</h1>
+
+<p class="text-success">We can use the <strong>same routes</strong> for the <strong>API</strong> and the frontend!</p>
+
+<ul>
+  <li>
+    <p>will save you a ton of work</p>
+  </li>
+  <li>
+    <p>enables a certain kind of architecture</p>
+  </li>
+</ul>
+</section>
+<section id='server-spas_sync'>
+<h1 id="we-do-not-sync">💡  We do Not Sync</h1>
+
+<p>Two (n-) way syncing data is very hard/expensive to implement.
+So we just do not do it.</p>
+
+<p><img alt="re-frame" width="40%" src="server-spas4-68b2eb87.png" /></p>
+</section>
+
+</section>
+<section id='benefits'>
+<section id='benefits_intro'>
+<h1 id="benefits---developer-experience---architecture">🕚  Benefits - Developer Experience - Architecture</h1>
+</section>
+<section id='benefits_uniform_code'>
+<h1 id="uniform-programming-clojure--clojurescript">♻ Uniform Programming Clojure + ClojureScript</h1>
+
+<p class="text-info">Our primary goal is to implement features;
+not to write <em>HTML</em>, <em>React</em>, <em>SQL</em>, <em>ActiveRecord</em>, …</p>
+
+<p class="text-warning">Traditional frameworks foster separation by technology and overhead in
+communication.</p>
+
+<ul>
+  <li>
+    <p><strong>same code</strong> on the server and client (almost)</p>
+  </li>
+  <li>
+    <p>it works, actually <strong>it is awesome</strong>!</p>
+  </li>
+</ul>
+
+<p>e.g. <a href="https://github.com/cider-ci/cider-ci_clj-utils/blob/9a4a0f61fe980a8b2ef6eed3779a814fdd54f5ce/src/cider_ci/utils/duration.cljc">duration parser and validator in Cider-CI</a></p>
+</section>
+<section id='benefits_uniform_data'>
+<h1 id="uniform-structures">🌲  Uniform Structures</h1>
+
+<p><strong>It is all just data - trees mostly.</strong></p>
+
+<ul>
+  <li>
+    <p>DOM <a href="https://github.com/weavejester/hiccup">weavejester/hiccup</a>, <a href="https://github.com/reagent-project/reagent">reagent</a></p>
+  </li>
+  <li>
+    <p>SQL <a href="https://github.com/jkk/honeysql">kk/honeysql</a></p>
+  </li>
+</ul>
+
+<p>Lisp's homoiconicity really flies here!</p>
+</section>
+<section id='benefits_clojurescript'>
+<h1 id="clojurescript-programming-experience">🚀  ClojureScript Programming Experience</h1>
+
+<blockquote>
+  <p>It is really better than writing pure JavaScript!</p>
+</blockquote>
+
+<ul>
+  <li>
+    <p>source maps</p>
+  </li>
+  <li>
+    <p>interactive programming with <a href="https://github.com/bhauman/lein-figwheel">bhauman/lein-figwheel</a></p>
+  </li>
+</ul>
+
+<p>Demo?</p>
+</section>
+<section id='benefits_architecture'>
+<h1 id="architecture">🏠  Architecture</h1>
+
+<p class="text-warning">Most application have a scrum driven (i.e. non at all) architecture.</p>
+
+<p>On the next level the architectures are mostly technology driven.</p>
+
+<p class="text-success">We should include the features and demands in our architectures.</p>
+</section>
+<section id='benefits_example-ci-architecture'>
+<h1 id="feature-driven-architecture">🍏  Feature Driven Architecture</h1>
+
+<p><img alt="Cider-CI" width="70%" src="cider-v4-architecture-60b33b36.png" /></p>
+
+<p><small> Cider-CI Architecture Refactoring </small></p>
+
+<p>⇒ cheaper and easier changes and refactorings</p>
+</section>
+
+</section>
+<section id='end'>
+<section id='end_intro'>
+<h1 id="final-words">🕛  Final Words</h1>
+</section>
+<section id='end_why'>
+<h1 id="why-should-you-care">Why should you care?</h1>
+
+<ul>
+  <li>
+    <p>JavaScript has to many gotchas as a general platform on the server.</p>
+  </li>
+  <li>
+    <p>Ruby (on Rails), PHP, Python, &#8230;, will never run in the browser for
+real.  They have also too many weaknesses on the server.</p>
+  </li>
+</ul>
+<div class='fragment'>
+<p>Imho, we have to move and the future will be either:</p>
+
+<p>The enterprise stack <strong>Angular 2/3</strong> + <strong>server technology X</strong>, or the
+distinguishable alternative <strong>Clojure</strong> + <strong>ClojureScript</strong>.</p>
+
+<p class="text-info"><strong>What do you choose?</strong></p>
+</div>
+</section>
+<section id='end_end'>
+<h1 id="the-end">THE END</h1>
+
+<p>Thank you!</p>
+</section>
+
+</section>
+
+</div>
+</div>
+</body>
+</html>

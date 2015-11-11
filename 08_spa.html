@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='width=device-width, initial-scale=1' name='viewport'>
+<title>Functional Reactive Web-Application Programming - ZHdK HackITZ Nov. 2016</title>
+<script script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+<link href="assets/stylesheets/app-07a25028.css" rel="stylesheet" />
+<script src="assets/javascripts/vendor-a2809d13.js"></script>
+<script src="assets/javascripts/app-7be069d1.js"></script>
+</head>
+<body>
+<div class='reveal'>
+<div class='slides container-fluid'>
+<section id='spa_into'>
+<h1>🕖  Single Page Applications</h1>
+<blockquote>
+Single-Page Applications (SPAs) are Web apps that load a single HTML page
+and dynamically update that page as the user interacts with the app ...
+without constant page reloads. (ASP.NET)
+</blockquote>
+<small class='text-muted'>
+We consider a webapp without data exchange to or from the server for now.
+</small>
+</section>
+<section id='spa_reframe'>
+<h1 id="re-framehttpsgithubcomday8re-frame"><a href="https://github.com/Day8/re-frame">re-frame</a></h1>
+
+<p><em>re-frame</em> is a <strong>pattern</strong> for writing SPAs in <strong>ClojureScript</strong>, using <strong>Reagent</strong>.</p>
+
+<blockquote>
+  <p>"It's MVC, Jim, but not as we know it". (re-frame)</p>
+</blockquote>
+<div class='fragment'>
+<p>
+<b class='text-warning'>Honestly, it is not MVC!</b>
+</p>
+<small>
+<p>You will find the patterns used in <em>re-frame</em> in other talks, libraries, frameworks.
+It is all over the place.</p>
+
+<p>You should read the re-frame documentation. It is witty in all of its meanings.</p>
+</small>
+</div>
+</section>
+<section id='spa_reframe_key'>
+<h1>re-frame key features</h1>
+<div class='row'>
+<div class='col-xs-6'>
+<p><img alt="re-frame" width="80%" src="re-frame-2381b27d.png" /></p>
+</div>
+<div class='col-xs-6'>
+<ul>
+  <li>
+    <p>One and only one database!</p>
+  </li>
+  <li>
+    <p>Data flows from the database to the DOM.</p>
+  </li>
+  <li>
+    <p>Events cause the database to change.</p>
+  </li>
+  <li>
+    <p>Events never manipulate the DOM directly.</p>
+  </li>
+</ul>
+
+<p class="text-warning"><strong>no shortcuts!</strong></p>
+</div>
+</div>
+</section>
+<section id='spa_databases'>
+<h1 id="one-database-">One Database ?</h1>
+
+<p>Technically, you can have multiple databases.</p>
+
+<p>Their signal graph must form an <strong>acyclic directed graph</strong>.</p>
+
+<p>Make sure you don't shortcut. The Dom is always "the sink".</p>
+
+<p class="text-info">Do not complicate things unnecessarily
+⇒ <strong>just use one database</strong>!</p>
+<small class='fragment text-muted'>
+These rules are less out of a technical necessity.  They help us to avoid
+unnecessary complexity and focus on the features.
+</small>
+</section>
+<section id='spa_validation'>
+<h1 id="define-a-schema-and-validate">Define a Schema and Validate!</h1>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>(<span style="color:#080;font-weight:bold">ns</span> <span style="color:#707;font-weight:bold">cider-ci.repository.fetch-and-update.db-schema</span>&#x000A;<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  (<span style="color:#A60">:require</span> [schema.core <span style="color:#A60">:as</span> schema]))&#x000A;<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>&#x000A;<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>(<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">schema</span>&#x000A;<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  {<span style="color:#A60">:last_fetched_at</span> (schema/maybe org.joda.time.DateTime)&#x000A;<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>   <span style="color:#A60">:last_error</span> (schema/maybe String)&#x000A;<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>   <span style="color:#A60">:last_error_at</span> (schema/maybe org.joda.time.DateTime)&#x000A;<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>   <span style="color:#A60">:updated_at</span> org.joda.time.DateTime&#x000A;<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>   <span style="color:#A60">:state</span> (schema/enum <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">error</span><span style="color:#710">&quot;</span></span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">fetching</span><span style="color:#710">&quot;</span></span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">initializing</span><span style="color:#710">&quot;</span></span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">ok</span><span style="color:#710">&quot;</span></span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">waiting</span><span style="color:#710">&quot;</span></span>)&#x000A;<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>   <span style="color:#A60">:pending?</span> Boolean })</pre></div>
+</div>
+</div>
+<div class='fragment'>
+<p>e.g. use it like this</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>(<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">fetch-and-update-db</span>&#x000A;<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  (<span style="color:#080;font-weight:bold">atom</span> {<span style="color:#A60">:last_fetched_at</span> <span style="color:#069">nil</span>&#x000A;<span class="line-numbers"><a href="#n3" name="n3">3</a></span>         <span style="color:#A60">:last_error</span> <span style="color:#069">nil</span>&#x000A;<span class="line-numbers"><a href="#n4" name="n4">4</a></span>         <span style="color:#A60">:last_error_at</span> <span style="color:#069">nil</span>&#x000A;<span class="line-numbers"><a href="#n5" name="n5">5</a></span>         <span style="color:#A60">:updated_at</span> (time/now)&#x000A;<span class="line-numbers"><a href="#n6" name="n6">6</a></span>         <span style="color:#A60">:pending?</span> <span style="color:#069">true</span>&#x000A;<span class="line-numbers"><a href="#n7" name="n7">7</a></span>         <span style="color:#A60">:state</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">initializing</span><span style="color:#710">&quot;</span></span> }&#x000A;<span class="line-numbers"><a href="#n8" name="n8">8</a></span>        <span style="color:#A60">:validator</span> #(schema/validate schema %)))</pre></div>
+</div>
+</div>
+<small>
+<p><a href="https://github.com/plumatic/schema">plumatic/schema</a> works uniformly in Clojure and ClojureScript.</p>
+</small>
+</div>
+</section>
+
+</div>
+</div>
+</body>
+</html>

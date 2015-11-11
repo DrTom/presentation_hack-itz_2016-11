@@ -1,0 +1,1 @@
+(function(){$(function(){return Reveal.initialize({history:!0,fragments:!0,showNotes:!0,dependencies:[{src:"reveal.js-3.1.0/plugin/notes/notes.js"}]}),Reveal.addEventListener("slidechanged",function(e){return MathJax.Hub.Rerender()})})}).call(this);

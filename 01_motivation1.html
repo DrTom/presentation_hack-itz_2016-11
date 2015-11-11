@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='width=device-width, initial-scale=1' name='viewport'>
+<title>Functional Reactive Web-Application Programming - ZHdK HackITZ Nov. 2016</title>
+<script script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+<link href="assets/stylesheets/app-07a25028.css" rel="stylesheet" />
+<script src="assets/javascripts/vendor-a2809d13.js"></script>
+<script src="assets/javascripts/app-7be069d1.js"></script>
+</head>
+<body>
+<div class='reveal'>
+<div class='slides container-fluid'>
+<section id='motivation_cider_ci'>
+<h1 id="motivation-1---cider-ci">🕐  Motivation 1 - Cider-CI</h1>
+
+<ul>
+  <li>periodically pull page (!) and replace</li>
+</ul>
+
+<p><img alt="Madek" width="80%" src="madek-7bb149cc.png" /></p>
+</section>
+<section id='motivation_cider-ci_pjax'>
+<h1 id="known-as-pjax">Known as pjax</h1>
+
+<ul>
+  <li>pjax = pushState + ajax</li>
+</ul>
+
+<blockquote>
+  <p>pjax works by grabbing html from your server via ajax and replacing the content of a container on your page with the ajax'd html</p>
+</blockquote>
+<p class='text-warning'>
+<i class='fa fa-bomb'></i>
+"pushState" ⇒  pulling
+</p>
+</section>
+<section id='motivation_cider-ci_pro-cons'>
+<h1>pjax pro / cons</h1>
+<div class='row'>
+<div class='col-xs-6 text-success'>
+<ul>
+  <li>
+    <p>simple, very little JavaScript</p>
+  </li>
+  <li>
+    <p>extends server side rendering</p>
+  </li>
+</ul>
+</div>
+<div class='col-xs-6 text-danger'>
+<ul>
+  <li>
+    <p>not suitable for complex frontend</p>
+  </li>
+  <li>
+    <p>frequent pulling causes load and traffic</p>
+  </li>
+  <li>
+    <p>time lags</p>
+  </li>
+</ul>
+</div>
+</div>
+</section>
+<section id='motivation_pjax_goal'>
+<h1 id="goals-1">Goals 1</h1>
+
+<h2 id="maintain-state-on-the-server">maintain state on the server,</h2>
+
+<h2 id="and-push-it-from-there-to-the-browser-on-demand">and push it from there to the browser on demand</h2>
+</section>
+
+</div>
+</div>
+</body>
+</html>

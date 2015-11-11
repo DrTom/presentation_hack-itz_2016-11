@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='width=device-width, initial-scale=1' name='viewport'>
+<title>Functional Reactive Web-Application Programming - ZHdK HackITZ Nov. 2016</title>
+<script script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+<link href="assets/stylesheets/app-07a25028.css" rel="stylesheet" />
+<script src="assets/javascripts/vendor-a2809d13.js"></script>
+<script src="assets/javascripts/app-7be069d1.js"></script>
+</head>
+<body>
+<div class='reveal'>
+<div class='slides container-fluid'>
+<section id='atoms_intro'>
+<h1 id="storing-state-with-atoms">🕕  Storing State with Atoms</h1>
+</section>
+<section id='atoms_inc-dec'>
+<p>increase and decrease example:</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>  (<span style="color:#080;font-weight:bold">def</span> ^<span style="color:#A60">:dynamic</span> db {<span style="color:#A60">:a</span> <span style="color:#00D">0</span> <span style="color:#A60">:b</span> <span style="color:#00D">0</span>})&#x000A;<span class="line-numbers"><a href="#n2" name="n2">2</a></span>&#x000A;<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  (<span style="color:#080;font-weight:bold">doseq</span> [_ (<span style="color:#080;font-weight:bold">range</span> <span style="color:#00D">0</span> <span style="color:#00D">1000</span>)]&#x000A;<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">db</span> {<span style="color:#A60">:a</span> (<span style="color:#080;font-weight:bold">inc</span> (<span style="color:#A60">:a</span> db))&#x000A;<span class="line-numbers"><a href="#n5" name="n5">5</a></span>             <span style="color:#A60">:b</span> (<span style="color:#080;font-weight:bold">dec</span> (<span style="color:#A60">:b</span> db))}))&#x000A;<span class="line-numbers"><a href="#n6" name="n6">6</a></span>&#x000A;<span class="line-numbers"><a href="#n7" name="n7">7</a></span>  <span style="color:#777">; (= db {:a 1000 :b -1000})</span></pre></div>
+</div>
+</div>
+<div class='fragment'>
+<p>with threads</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>  (<span style="color:#080;font-weight:bold">def</span> ^<span style="color:#A60">:dynamic</span> db {<span style="color:#A60">:a</span> <span style="color:#00D">0</span> <span style="color:#A60">:b</span> <span style="color:#00D">0</span>})&#x000A;<span class="line-numbers"><a href="#n2" name="n2">2</a></span>&#x000A;<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  (<span style="color:#080;font-weight:bold">doseq</span> [_ (<span style="color:#080;font-weight:bold">range</span> <span style="color:#00D">0</span> <span style="color:#00D">1000</span>)]&#x000A;<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    (<span style="color:#080;font-weight:bold">future</span>&#x000A;<span class="line-numbers"><a href="#n5" name="n5">5</a></span>      (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">db</span> {<span style="color:#A60">:a</span> (<span style="color:#080;font-weight:bold">inc</span> (<span style="color:#A60">:a</span> db))&#x000A;<span class="line-numbers"><a href="#n6" name="n6">6</a></span>               <span style="color:#A60">:b</span> (<span style="color:#080;font-weight:bold">dec</span> (<span style="color:#A60">:b</span> db))})))&#x000A;<span class="line-numbers"><a href="#n7" name="n7">7</a></span>&#x000A;<span class="line-numbers"><a href="#n8" name="n8">8</a></span>  <span style="color:#777">; .e.g. (= db {:a 598, :b -666})</span></pre></div>
+</div>
+</div>
+
+<p>ooooops</p>
+</div>
+<small class='fragment text-warning'>
+The absence of threads does not solve the state problem, it makes it even harder.
+</small>
+</section>
+<section id='atoms_mvvc'>
+<h1 id="the-atom">The Atom</h1>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>  (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">db</span> (<span style="color:#080;font-weight:bold">atom</span> {<span style="color:#A60">:a</span> <span style="color:#00D">0</span> <span style="color:#A60">:b</span> <span style="color:#00D">0</span>}))&#x000A;<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>&#x000A;<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  (<span style="color:#080;font-weight:bold">doseq</span> [_ (<span style="color:#080;font-weight:bold">range</span> <span style="color:#00D">0</span> <span style="color:#00D">1000</span>)]&#x000A;<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    (<span style="color:#080;font-weight:bold">future</span>&#x000A;<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>      (<span style="color:#080;font-weight:bold">swap!</span> db&#x000A;<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>             (<span style="color:#080;font-weight:bold">fn</span> [current]&#x000A;<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>               {<span style="color:#A60">:a</span> (<span style="color:#080;font-weight:bold">inc</span> (<span style="color:#A60">:a</span> current))&#x000A;<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>                <span style="color:#A60">:b</span> (<span style="color:#080;font-weight:bold">dec</span> (<span style="color:#A60">:b</span> current))}))))&#x000A;<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>&#x000A;<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  <span style="color:#777">; (= @db {:a 1000, :b -1000})</span></pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Atoms provide a way to manage shared, synchronous, independent state.
+The intended use of <code>atom</code> is to hold one of Clojure’s immutable data structures.</p>
+</blockquote>
+</section>
+<section id='atoms_cont'>
+<h1 id="the-atom-cont">The Atom cont.</h1>
+
+<h2 id="interesting">Interesting</h2>
+
+<ul>
+  <li>no <code>locking</code></li>
+  <li>transactions, MVCC</li>
+</ul>
+
+<hr />
+
+<h2 id="extremely-useful">Extremely useful</h2>
+
+<ul>
+  <li>
+    <p>support validators ⇒ schema</p>
+  </li>
+  <li>
+    <p>watchable</p>
+  </li>
+</ul>
+</section>
+
+</div>
+</div>
+</body>
+</html>

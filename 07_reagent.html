@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='width=device-width, initial-scale=1' name='viewport'>
+<title>Functional Reactive Web-Application Programming - ZHdK HackITZ Nov. 2016</title>
+<script script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+<link href="assets/stylesheets/app-07a25028.css" rel="stylesheet" />
+<script src="assets/javascripts/vendor-a2809d13.js"></script>
+<script src="assets/javascripts/app-7be069d1.js"></script>
+</head>
+<body>
+<div class='reveal'>
+<div class='slides container-fluid'>
+<section id='reagent_intro'>
+<h1 id="reactive-programming---atoms---reagent">🕕  Reactive Programming - Atoms - Reagent</h1>
+</section>
+<section id='reagent_reactive'>
+<h1 id="atoms-and-reactive-programming">Atoms and Reactive Programming</h1>
+
+<p>imagine: <code>atom</code> ≅ cell of a spreadsheet</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>  (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">a1</span> (<span style="color:#080;font-weight:bold">atom</span> <span style="color:#00D">5</span>))&#x000A;<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">a2</span> (<span style="color:#080;font-weight:bold">atom</span> <span style="color:#00D">7</span>))&#x000A;<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  (<span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">a3</span> (reaction (<span style="color:#080;font-weight:bold">+</span> @a1 @a2)))</pre></div>
+</div>
+</div>
+<div class='fragment'>
+<ul>
+  <li><code>a3</code> is an atom</li>
+  <li>value of <code>a1</code> or <code>a2</code> change ⇒  <code>a3</code> will get updated[^lazy][^reaction]</li>
+  <li>evaluation can be <em>eager</em> or <em>lazy</em>, depending on the environment and library</li>
+</ul>
+</div>
+</section>
+<section id='reagent_core'>
+<h1 id="i-classfa-fa-flaski-reagenthttpsreagent-projectgithubio"><a href="https://reagent-project.github.io/"><i class="fa fa-flask"></i> Reagent</a></h1>
+
+<p>-</p>
+
+<h2 id="minimalistic-react-for-clojurescript">"Minimalistic React for ClojureScript"</h2>
+
+<p>see</p>
+
+<h2 id="managing-state-in-reagent">"Managing state in Reagent"</h2>
+</section>
+
+</div>
+</div>
+</body>
+</html>

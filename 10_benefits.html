@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='width=device-width, initial-scale=1' name='viewport'>
+<title>Functional Reactive Web-Application Programming - ZHdK HackITZ Nov. 2016</title>
+<script script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+<link href="assets/stylesheets/app-07a25028.css" rel="stylesheet" />
+<script src="assets/javascripts/vendor-a2809d13.js"></script>
+<script src="assets/javascripts/app-7be069d1.js"></script>
+</head>
+<body>
+<div class='reveal'>
+<div class='slides container-fluid'>
+<section id='benefits_intro'>
+<h1 id="benefits---developer-experience---architecture">🕚  Benefits - Developer Experience - Architecture</h1>
+</section>
+<section id='benefits_uniform_code'>
+<h1 id="uniform-programming-clojure--clojurescript">♻ Uniform Programming Clojure + ClojureScript</h1>
+
+<p class="text-info">Our primary goal is to implement features;
+not to write <em>HTML</em>, <em>React</em>, <em>SQL</em>, <em>ActiveRecord</em>, …</p>
+
+<p class="text-warning">Traditional frameworks foster separation by technology and overhead in
+communication.</p>
+
+<ul>
+  <li>
+    <p><strong>same code</strong> on the server and client (almost)</p>
+  </li>
+  <li>
+    <p>it works, actually <strong>it is awesome</strong>!</p>
+  </li>
+</ul>
+
+<p>e.g. <a href="https://github.com/cider-ci/cider-ci_clj-utils/blob/9a4a0f61fe980a8b2ef6eed3779a814fdd54f5ce/src/cider_ci/utils/duration.cljc">duration parser and validator in Cider-CI</a></p>
+</section>
+<section id='benefits_uniform_data'>
+<h1 id="uniform-structures">🌲  Uniform Structures</h1>
+
+<p><strong>It is all just data - trees mostly.</strong></p>
+
+<ul>
+  <li>
+    <p>DOM <a href="https://github.com/weavejester/hiccup">weavejester/hiccup</a>, <a href="https://github.com/reagent-project/reagent">reagent</a></p>
+  </li>
+  <li>
+    <p>SQL <a href="https://github.com/jkk/honeysql">kk/honeysql</a></p>
+  </li>
+</ul>
+
+<p>Lisp's homoiconicity really flies here!</p>
+</section>
+<section id='benefits_clojurescript'>
+<h1 id="clojurescript-programming-experience">🚀  ClojureScript Programming Experience</h1>
+
+<blockquote>
+  <p>It is really better than writing pure JavaScript!</p>
+</blockquote>
+
+<ul>
+  <li>
+    <p>source maps</p>
+  </li>
+  <li>
+    <p>interactive programming with <a href="https://github.com/bhauman/lein-figwheel">bhauman/lein-figwheel</a></p>
+  </li>
+</ul>
+
+<p>Demo?</p>
+</section>
+<section id='benefits_architecture'>
+<h1 id="architecture">🏠  Architecture</h1>
+
+<p class="text-warning">Most application have a scrum driven (i.e. non at all) architecture.</p>
+
+<p>On the next level the architectures are mostly technology driven.</p>
+
+<p class="text-success">We should include the features and demands in our architectures.</p>
+</section>
+<section id='benefits_example-ci-architecture'>
+<h1 id="feature-driven-architecture">🍏  Feature Driven Architecture</h1>
+
+<p><img alt="Cider-CI" width="70%" src="cider-v4-architecture-60b33b36.png" /></p>
+
+<p><small> Cider-CI Architecture Refactoring </small></p>
+
+<p>⇒ cheaper and easier changes and refactorings</p>
+</section>
+
+</div>
+</div>
+</body>
+</html>
