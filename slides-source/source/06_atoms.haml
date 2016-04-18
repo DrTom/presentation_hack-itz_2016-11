@@ -1,0 +1,83 @@
+%section#atoms_intro
+  :markdown
+    # 🕕  Storing State with Atoms
+
+%section#atoms_inc-dec
+  :markdown
+    increase and decrease example:
+
+    ~~~clojure
+      (def ^:dynamic db {:a 0 :b 0})
+
+      (doseq [_ (range 0 1000)]
+        (def db {:a (inc (:a db))
+                 :b (dec (:b db))}))
+
+      ; (= db {:a 1000 :b -1000})
+    ~~~
+
+  .fragment
+    :markdown
+      with threads
+
+      ~~~clojure
+        (def ^:dynamic db {:a 0 :b 0})
+
+        (doseq [_ (range 0 1000)]
+          (future
+            (def db {:a (inc (:a db))
+                     :b (dec (:b db))})))
+
+        ; .e.g. (= db {:a 598, :b -666})
+      ~~~
+
+      ooooops
+
+  %small.fragment.text-warning
+    The absence of threads does not solve the state problem, it makes it even harder.
+
+
+%section#atoms_mvvc
+  :markdown
+
+
+    # The Atom
+
+
+    ~~~clojure
+      (def db (atom {:a 0 :b 0}))
+
+      (doseq [_ (range 0 1000)]
+        (future
+          (swap! db
+                 (fn [current]
+                   {:a (inc (:a current))
+                    :b (dec (:b current))}))))
+
+      ; (= @db {:a 1000, :b -1000})
+    ~~~
+
+    > Atoms provide a way to manage shared, synchronous, independent state.
+    > The intended use of `atom` is to hold one of Clojure’s immutable data structures.
+
+
+
+%section#atoms_cont
+  :markdown
+
+    # The Atom cont.
+
+
+    ## Interesting
+
+    * no `locking`
+    * transactions, MVCC
+
+    <hr>
+
+    ## Extremely useful
+
+    * support validators ⇒ schema
+
+    * watchable
+

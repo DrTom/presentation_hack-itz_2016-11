@@ -1,0 +1,74 @@
+%section#server-spas_intro
+  :markdown
+    # 🕘  SPAs interacting with the Server
+
+    * At least a part of the routes are SPAs.
+
+    * Updated state on the server needs to be reflected on the client.
+
+    ⇒ extending the re-frame concept
+
+%section#server-spas_1
+  :markdown
+    ![re-frame](server-spas1.png){: width="80%"}
+
+%section#server-spas_2
+  :markdown
+    ![re-frame](server-spas2.png){: width="80%"}
+
+%section#server-spas_webscale
+  :markdown
+    # But this is not "webscale"
+
+    > No, but on how many cores does your application run right now?
+
+
+
+%section#server-spas_3
+  :markdown
+    ![re-frame](server-spas3.png){: width="80%"}
+
+%section#server-spas_push
+  :markdown
+    # 📌  Push for the channel Server → Client
+
+    * probably WebSockets
+    * push diffs !
+
+    We push the state in the spirit of reactive programming.
+    {: .text-success}
+
+    nothing else, no RPC style, nothing !
+    {: .text-warning}
+
+    ⇒ WebSockets via [ptaoussanis/sente](https://github.com/ptaoussanis/sente)
+    seem to work rather well
+
+
+%section#server-spas_4
+  :markdown
+    ![re-frame](server-spas4.png){: width="80%"}
+
+
+%section#server-spas_rest
+  :markdown
+    # 🌐  REST for the Channel Client → Server
+
+    We can use the **same routes** for the **API** and the frontend!
+    {: .text-success}
+
+
+    * will save you a ton of work
+
+    * enables a certain kind of architecture
+
+
+%section#server-spas_sync
+  :markdown
+    # 💡  We do Not Sync
+
+    Two (n-) way syncing data is very hard/expensive to implement.
+    So we just do not do it.
+
+    ![re-frame](server-spas4.png){: width="40%"}
+

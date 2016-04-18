@@ -1,0 +1,90 @@
+%section#motivation_madek_intro
+  :markdown
+    # 🕒  Motivation 3 - Segregation
+
+%section#motivation_madek
+  :markdown
+
+    There is an unnatural and unnecessary divide between back- and frontend.
+    The gap in Madek v3 is now bigger as it has ever been before.
+    {: .text-muted}
+
+  .fragment
+    :markdown
+
+      Rails and other MVC Frameworks: **convention over configuration**
+      {: .text-success}
+
+      breaks down when things get complex
+      {: .text-danger}
+
+  .fragment
+    :markdown
+
+      * "Backend": Lots of Rails + AR hacks to write complex SQL queries.
+
+      * Middle-Layer: lots of code (presenters etc.) if you want real separation (as in MVC)
+
+
+%section#motivation_madek_jsx
+
+  %h1 Frontend: (C)JSX
+
+  .row
+    .col-xs-6
+      %p.text-success
+        %i.fa.fa-check
+        some React goodness
+      %p.text-warning
+        %i.fa.fa-minus
+        XML/HTML hard to read
+      %p.text-danger
+        %i.fa.fa-bomb
+        Templates
+
+    .col-xs-6
+      %pre.code{style: 'font-size: 40%'}
+        :escaped
+          React = require('react')
+          ReactDOM = require('react-dom')
+          RailsForm = require('../lib/forms/rails-form.cjsx')
+
+          module.exports = React.createClass
+            displayName: 'HeaderButton'
+
+            _onClick: (event) ->
+              event.preventDefault()
+              if @props.onAction
+                @props.onAction(@props.asyncAction)
+              return false
+
+            render: ({authToken, href, method, icon, title, name} = @props) ->
+              method = 'post' if not method
+              icon = 'icon-' + icon
+              onClick = if @props.onAction and @props.asyncAction then @_onClick else null
+              <RailsForm className='button_to' name='' method={method} action={href} authToken={authToken}>
+                <button className="button" type="submit" title={title} onClick={onClick}>
+                  <i className={icon}></i>
+                </button>
+                {@props.children}
+              </RailsForm>
+
+  %p.fragment
+    %b The DOM "is a tree"!
+    %span.text-success
+      Encode it es such and you get full code- and composability.
+
+
+
+%section#motivation_madek_goal
+  :markdown
+
+    # Goal 3
+
+    ## uniformity
+
+    close the gap between backend and frontend
+
+
+
+

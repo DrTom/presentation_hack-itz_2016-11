@@ -1,0 +1,45 @@
+%section#reagent_intro
+  :markdown
+
+    # 🕕  Reactive Programming - Atoms - Reagent
+
+
+
+%section#reagent_reactive
+  :markdown
+
+    # Atoms and Reactive Programming
+
+    imagine: `atom` ≅ cell of a spreadsheet
+
+
+    ~~~clojure
+      (def a1 (atom 5))
+      (def a2 (atom 7))
+      (def a3 (reaction (+ @a1 @a2)))
+    ~~~
+
+  .fragment
+    :markdown
+      * `a3` is an atom
+      * value of `a1` or `a2` change ⇒  `a3` will get updated[^lazy][^reaction]
+      * evaluation can be _eager_ or _lazy_, depending on the environment and library
+
+
+%section#reagent_core
+  :markdown
+
+
+
+    # [<i class="fa fa-flask"></i> Reagent](https://reagent-project.github.io/)
+
+    -
+
+    ## "Minimalistic React for ClojureScript"
+
+    see
+
+    ## "Managing state in Reagent"
+
+
+

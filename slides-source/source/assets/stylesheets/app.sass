@@ -1,0 +1,60 @@
+
+$heading1Size: 2em
+.reveal
+  .slides
+
+    .section
+      .wrap
+        width: 100%
+        .left
+          float: left
+          width: 20%
+        .right
+          float: left
+          width: 80%
+
+
+    .footnotes
+      border-top: 1px solid gray
+      margin-top: 2em
+      font-size: 50%
+
+    sup
+      a.footnote
+        font-size: 50%
+
+    ul
+      margin-left: 1.5em
+      li
+        margin-top: 0.2em
+
+    section
+      h1
+        font-size: 1.5em
+        margin-top: 1em
+        margin-bottom: .25em
+
+      h2
+        font-size: 1.25em
+        margin-top: 1em
+        margin-bottom: .25em
+
+      h3, h4, h5, h6
+        font-size: 1em
+
+      img
+        border: 0px solid white
+        box-shadow: 0 0 0px white
+
+      &.smaller
+        font-size: 80%
+
+
+@import "bootstrap-sprockets"
+@import "bootstrap"
+
+@import "reveal.js-3.1.0/css/reveal"
+@import "reveal.js-3.1.0/css/theme/source/white"
+
+@import font-awesome-sprockets
+@import font-awesome

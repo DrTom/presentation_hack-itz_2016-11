@@ -1,0 +1,8 @@
+/slides-source/build
+/slides-source/vendor
+/slides-source/node_modules
+/tmp
+npm-debug.log
+/slides
+/videos
+/decktape

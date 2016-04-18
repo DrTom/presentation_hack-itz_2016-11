@@ -1,0 +1,59 @@
+%section#motivation_cider_ci
+  :markdown
+
+    # 🕐  Motivation 1 - Cider-CI
+
+    * periodically pull page (!) and replace
+
+    ![Madek](madek.png){: width="80%"}
+
+
+
+
+%section#motivation_cider-ci_pjax
+  :markdown
+
+    # Known as pjax
+
+    * pjax = pushState + ajax
+
+    > pjax works by grabbing html from your server via ajax and replacing the content of a container on your page with the ajax'd html
+
+  %p.text-warning
+    %i.fa.fa-bomb
+    "pushState" ⇒  pulling
+
+
+
+
+%section#motivation_cider-ci_pro-cons
+  %h1 pjax pro / cons
+
+  .row
+    .col-xs-6.text-success
+      :markdown
+
+        * simple, very little JavaScript
+
+        * extends server side rendering
+
+
+    .col-xs-6.text-danger
+      :markdown
+
+        * not suitable for complex frontend
+
+        * frequent pulling causes load and traffic
+
+        * time lags
+
+%section#motivation_pjax_goal
+  :markdown
+    # Goals 1
+
+    ## maintain state on the server,
+
+    ## and push it from there to the browser on demand
+
+
+
